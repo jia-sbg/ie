@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>设置为主页 - 兼容IE搜索引擎</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏠 设置为主页</h1>
+            <p class="subtitle">将兼容IE搜索引擎设置为您浏览器的主页</p>
+        </div>
+        
+        <div class="setup-guide">
+            <div class="browser-section">
+                <h2>Internet Explorer 设置方法</h2>
+                <div class="steps">
+                    <div class="step">
+                        <h3>方法一：拖拽设置（推荐）</h3>
+                        <p>将下面的链接拖拽到IE浏览器的主页按钮上：</p>
+                        <div class="drag-link" onclick="copyLink()" title="点击复制链接">
+                            <code id="pageUrl">https://your-username.github.io/ie-search-engine/</code>
+                            <button onclick="copyLink()">复制链接</button>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <h3>方法二：手动设置</h3>
+                        <ol>
+                            <li>点击IE浏览器右上角的"工具"按钮（齿轮图标）</li>
+                            <li>选择"Internet选项"</li>
+                            <li>在"常规"标签页的"主页"部分</li>
+                            <li>粘贴以下网址：<br>
+                                <code>https://your-username.github.io/ie-search-engine/</code>
+                            </li>
+                            <li>点击"应用"，然后点击"确定"</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="browser-section">
+                <h2>其他浏览器设置方法</h2>
+                <div class="steps">
+                    <div class="step">
+                        <h3>Chrome / Edge / Firefox</h3>
+                        <ol>
+                            <li>打开浏览器设置</li>
+                            <li>找到"启动时"或"主页"选项</li>
+                            <li>选择"打开特定网页"</li>
+                            <li>粘贴网址：<br>
+                                <code>https://your-username.github.io/ie-search-engine/</code>
+                            </li>
+                            <li>保存设置</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="quick-setup">
+                <h2>快速设置</h2>
+                <p>点击下方按钮快速设置为主页（部分浏览器支持）：</p>
+                <button onclick="setAsHomepage()" class="big-button">立即设置为主页</button>
+                <p class="note">注意：此功能可能需要浏览器允许弹出窗口</p>
+            </div>
+            
+            <div class="back-link">
+                <a href="index.html">← 返回搜索页面</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 获取当前页面URL
+        var currentUrl = window.location.href;
+        var baseUrl = currentUrl.substring(0, currentUrl.lastIndexOf('/') + 1);
+        var homepageUrl = baseUrl + 'index.html';
+        
+        // 更新页面中的URL显示
+        var urlElements = document.querySelectorAll('code');
+        urlElements.forEach(function(el) {
+            if (el.textContent.includes('your-username.github.io')) {
+                el.textContent = homepageUrl;
+            }
+        });
+        
+        // 复制链接功能
+        function copyLink() {
+            var textArea = document.createElement("textarea");
+            textArea.value = homepageUrl;
+            document.body.appendChild(textArea);
+            textArea.select();
+            
+            try {
+                var successful = document.execCommand('copy');
+                alert(successful ? '链接已复制到剪贴板！' : '复制失败，请手动复制');
+            } catch (err) {
+                alert('复制失败，请手动复制链接');
+            }
+            
+            document.body.removeChild(textArea);
+        }
+        
+        // 尝试设置为主页
+        function setAsHomepage() {
+            try {
+                // 旧版IE支持
+                if (document.body.setHomePage) {
+                    document.body.setHomePage(homepageUrl);
+                } 
+                // 现代浏览器
+                else if (window.external && ('AddFavorite' in window.external || 'AddSearchProvider' in window.external)) {
+                    alert('请手动设置为主页：\n1. 复制链接：' + homepageUrl + '\n2. 在浏览器设置中粘贴为主页');
+                } else {
+                    // 尝试通过修改浏览器设置（需要用户允许）
+                    alert('请按照页面上的指引手动设置为主页');
+                }
+            } catch (e) {
+                alert('自动设置失败，请按照上面的步骤手动设置');
+            }
+        }
+        
+        // 自动检测浏览器类型
+        window.onload = function() {
+            var userAgent = navigator.userAgent;
+            var ieNotice = document.getElementById('ieNotice');
+            
+            if (userAgent.indexOf("MSIE") !== -1 || userAgent.indexOf("Trident") !== -1) {
+                document.title = "IE浏览器主页设置 - 兼容IE搜索引擎";
+            }
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<!-- 使用HTML5 doctype但确保IE兼容 -->
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>兼容IE搜索引擎</title>
+    <!-- 强制IE使用最新渲染模式 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- 为IE8及以下添加HTML5支持 -->
+    <!--[if lt IE 9]>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔍</text></svg>">
+    <script src="ie-compatibility.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 兼容IE搜索引擎</h1>
+            <p class="subtitle">支持所有版本Internet Explorer浏览器</p>
+        </div>
+        
+        <div class="search-box">
+            <form id="searchForm" action="https://www.baidu.com/s" method="get" target="_blank">
+                <div class="search-input-wrapper">
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        name="wd" 
+                        placeholder="输入关键词搜索..." 
+                        autocomplete="off"
+                        autofocus
+                    >
+                    <button type="submit" id="searchButton">搜索</button>
+                </div>
+                
+                <div class="search-engines">
+                    <label class="engine-option">
+                        <input type="radio" name="engine" value="baidu" checked>
+                        <span>百度</span>
+                    </label>
+                    <label class="engine-option">
+                        <input type="radio" name="engine" value="bing">
+                        <span>必应</span>
+                    </label>
+                    <label class="engine-option">
+                        <input type="radio" name="engine" value="google">
+                        <span>Google</span>
+                    </label>
+                    <label class="engine-option">
+                        <input type="radio" name="engine" value="yahoo">
+                        <span>雅虎</span>
+                    </label>
+                </div>
+            </form>
+        </div>
+        
+        <div class="features">
+            <div class="feature">
+                <h3>🔧 IE完全兼容</h3>
+                <p>支持IE6-IE11所有版本浏览器</p>
+            </div>
+            <div class="feature">
+                <h3>🏠 设置为主页</h3>
+                <p><a href="homepage.html">点击这里设置为主页</a></p>
+            </div>
+            <div class="feature">
+                <h3>⚡ 快速搜索</h3>
+                <p>支持多个搜索引擎切换</p>
+            </div>
+        </div>
+        
+        <div class="quick-links">
+            <h3>常用网站</h3>
+            <div class="links">
+                <a href="https://news.baidu.com" target="_blank">新闻</a>
+                <a href="https://map.baidu.com" target="_blank">地图</a>
+                <a href="https://zh.wikipedia.org" target="_blank">维基百科</a>
+                <a href="https://github.com" target="_blank">GitHub</a>
+                <a href="https://stackoverflow.com" target="_blank">StackOverflow</a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2023 兼容IE搜索引擎 | 
+                <a href="homepage.html">设置为主页</a> | 
+                <a href="javascript:void(0)" onclick="showAbout()">关于</a>
+            </p>
+            <p id="browserInfo"></p>
+        </div>
+    </div>
+    
+    <!-- 简单对话框用于兼容IE -->
+    <div id="aboutModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:white; padding:20px; border:1px solid #ccc; z-index:1000;">
+        <h3>关于兼容IE搜索引擎</h3>
+        <p>这是一个专门为Internet Explorer浏览器优化的搜索引擎。</p>
+        <p>支持IE6及以上所有版本。</p>
+        <button onclick="hideAbout()">关闭</button>
+    </div>
+    
+    <script>
+        // 搜索引擎配置
+        var searchEngines = {
+            'baidu': {
+                'url': 'https://www.baidu.com/s',
+                'param': 'wd'
+            },
+            'bing': {
+                'url': 'https://www.bing.com/search',
+                'param': 'q'
+            },
+            'google': {
+                'url': 'https://www.google.com/search',
+                'param': 'q'
+            },
+            'yahoo': {
+                'url': 'https://search.yahoo.com/search',
+                'param': 'p'
+            }
+        };
+        
+        // 检测浏览器
+        function detectBrowser() {
+            var userAgent = navigator.userAgent;
+            var browserInfo = document.getElementById('browserInfo');
+            var info = '您正在使用: ';
+            
+            if (userAgent.indexOf("MSIE") !== -1 || userAgent.indexOf("Trident") !== -1) {
+                info += "Internet Explorer";
+                if (userAgent.indexOf("MSIE 10.0") !== -1) {
+                    info += " 10";
+                } else if (userAgent.indexOf("MSIE 9.0") !== -1) {
+                    info += " 9";
+                } else if (userAgent.indexOf("MSIE 8.0") !== -1) {
+                    info += " 8";
+                } else if (userAgent.indexOf("MSIE 7.0") !== -1) {
+                    info += " 7";
+                }
+            } else if (userAgent.indexOf("Edge") !== -1) {
+                info += "Microsoft Edge";
+            } else if (userAgent.indexOf("Chrome") !== -1) {
+                info += "Chrome";
+            } else if (userAgent.indexOf("Firefox") !== -1) {
+                info += "Firefox";
+            } else {
+                info += "其他浏览器";
+            }
+            
+            browserInfo.innerHTML = info;
+        }
+        
+        // 搜索表单处理
+        document.getElementById('searchForm').onsubmit = function(e) {
+            e.preventDefault();
+            
+            var searchText = document.getElementById('searchInput').value;
+            if (!searchText.trim()) {
+                alert('请输入搜索关键词');
+                return false;
+            }
+            
+            var selectedEngine = document.querySelector('input[name="engine"]:checked').value;
+            var engineConfig = searchEngines[selectedEngine];
+            
+            // 构建搜索URL
+            var searchUrl = engineConfig.url + '?' + engineConfig.param + '=' + encodeURIComponent(searchText);
+            
+            // 新窗口打开搜索结果
+            window.open(searchUrl, '_blank');
+            
+            return false;
+        };
+        
+        // 显示关于对话框
+        function showAbout() {
+            document.getElementById('aboutModal').style.display = 'block';
+        }
+        
+        // 隐藏关于对话框
+        function hideAbout() {
+            document.getElementById('aboutModal').style.display = 'none';
+        }
+        
+        // 页面加载完成后执行
+        window.onload = function() {
+            detectBrowser();
+        };
+    </script>
+</body>
+</html>
